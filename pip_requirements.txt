@@ -1,0 +1,10 @@
+Django
+south
+celery
+dulwich
+paramiko
+Mercurial
+-e git+http://github.com/toastdriven/django-tastypie.git#egg=tastypie
+-e git://github.com/simplegeo/python-oauth2.git#egg=oauth2
+-e git://github.com/chrisdickinson/waiter.git#egg=waiter
+-e git+http://github.com/chrisdickinson/django-bluebird.git#egg=bluebird
