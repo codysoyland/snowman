@@ -54,9 +54,12 @@ def translate_repository(repo_pk):
             hgui.setconfig('git', 'intree', 'false')
             hgui.setconfig('git', 'exportbranch', 'refs/heads/master')
             hgpath = os.path.join(repo.fs_path, 'hg') 
+            creation = 0 if os.path.exists(os.path.join(hgpath, '.hg')) else 1
             gitpath = os.path.join(repo.fs_path, 'git')
-            hgrepo = mercurial.localrepo.localrepository(hgui, hgpath, 1)
-            os.symlink(gitpath, os.path.join(hgpath, '.hg', 'git'))
+            hgrepo = mercurial.localrepo.localrepository(hgui, hgpath, creation)
+            symlink_target = os.path.join(hgpath, '.hg', 'git')
+            if not os.path.exists(symlink_target):
+                os.symlink(gitpath, symlink_target)
             githandler = hggit.GitHandler(hgrepo, hgui)
             githandler.import_commits(None)
         else:
