@@ -4,6 +4,8 @@ celery
 dulwich
 paramiko
 Mercurial
+psycopg2
+simplejson
 -e git+http://github.com/toastdriven/django-tastypie.git#egg=tastypie
 -e git://github.com/simplegeo/python-oauth2.git#egg=oauth2
 -e git://github.com/chrisdickinson/waiter.git#egg=waiter
