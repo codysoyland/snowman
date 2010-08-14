@@ -64,6 +64,7 @@ INSTALLED_APPS = (
     'south',
     'repo',
     'djcelery',
+#    'ghettoq',
 )
 
 IS_BLUEBIRD_AUTH_PORTAL = 1
@@ -71,3 +72,16 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'bluebird.backends.TwitterAuthBackend',
 )
+#CARROT_BACKEND = "ghettoq.taproot.Database"
+CELERY_DEFAULT_EXCHANGE = "tasks"
+CELERY_RESULT_BACKEND = 'database'
+CELERY_RESULT_DBURI = 'postgresql://postgres@localhost/repocracy'
+
+CELERY_IMPORTS = ('repocracy.repo.tasks',)
+
+BROKER_HOST = "localhost"
+BROKER_PORT = 5672
+BROKER_VHOST = "/"
+BROKER_USER = "guest"
+BROKER_PASSWORD = "guest"
+REPOCRACY_BASE_REPO_PATH = '/Users/chris/projects/snowman/repos'

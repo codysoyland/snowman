@@ -19,7 +19,7 @@ def clone_repository(repo_pk):
     else:
         destination = os.path.join(
             settings.REPOCRACY_BASE_REPO_PATH,
-            repo.pk
+            unicode(repo.pk)
         )
         destination_dirs = [os.path.join(destination, type) for type in ('hg', 'git')]
         for i in destination_dirs:
