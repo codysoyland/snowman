@@ -1,3 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
+<h1>Repocracy</h1>
+<h2>Get started</h2>
+<div>
+    <form method="POST" action=".">
+        {{ form }}
+        {% csrf_token %}
+        <input type="submit" />
+    </form>
+</div>
 {% endblock %}
