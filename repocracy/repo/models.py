@@ -47,8 +47,8 @@ class Repository(models.Model):
         """
         Get name of repo to build repo url.
         """
-        username = '' if self.user is None else self.user.username
-        return '/'.join([i for i in [username, self.name] if i])
+        username = '' if self.user is None else slugify(self.user.username)
+        return '/'.join([i for i in [username, slugify(self.name)] if i])
 
     def guess_name(self):
         """
@@ -81,7 +81,7 @@ class Repository(models.Model):
 
     def get_absolute_url(self):
         return reverse('repo_detail', kwargs={
-            'name':slugify(self.get_name()),
+            'name':self.get_name(),
         })
 
     def update(self):
