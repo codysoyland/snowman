@@ -1,6 +1,3 @@
-import simplejson
-
-from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.template import RequestContext
@@ -32,17 +29,19 @@ def repo_detail(request, name):
     """
     repo = get_object_or_404(Repository.objects.all(), slug=name)
 
-    # TODO: better status checking?
-    if Status.is_pending(repo):
-        return render_to_response(
-            'repo_pending.html',
-            {'repo':repo},
-            context_instance=RequestContext(request))
+    context_dict = {
+        'repo': repo,
+    }
 
-    return render_to_response('repo_detail.html', {
-        }, context_instance=RequestContext(request))
+    return render_to_response(
+        'repo_pending.html' if Status.is_pending(repo) else 'repo_detail.html',
+        context_dict, context_instance=RequestContext(request))
 
 def repo_claim(request, pk, claim_hash):
+    """
+    Use hash from repo (in twitter redirect URL) to "claim" the repo (assign
+    your user object to it).
+    """
     if request.user.is_authenticated():
         repo = get_object_or_404(Repository, pk=int(pk), claim_hash=claim_hash, user__pk__isnull=True)
         repo.user = request.user
