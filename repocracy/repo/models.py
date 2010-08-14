@@ -36,11 +36,30 @@ class Repository(models.Model):
         return self.name
 
     def get_name(self):
+        """
+        Get name of repo to build repo url.
+        """
         username = '' if self.user is None else self.user.username
         return '/'.join([i for i in [username, self.name] if i])
+
+    def guess_name(self):
+        """
+        Guess name of repository by examining origin url.
+
+        Example:
+
+        >>> self.origin = git://github.com/codysoyland/snowman.git
+        >>> print self.guess_name()
+        snowman
+        """
+        pieces = self.origin.split('/')
+        name = pieces[-1]
+        if not name:
+            name = pieces[-2]
+        name = name.split('.')[0]
+        return name
 
     def get_absolute_url(self):
         return reverse('repo_detail', kwargs={
             'name':slugify(self.get_name()),
         })
-
