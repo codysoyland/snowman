@@ -1,0 +1,20 @@
+Hey judges! Thanks so much for your time. Repocracy is a russian constructivist inspired website
+for turning repos based in one SCM (git or hg) into the opposite SCM.
+
+The cool thing? Add a web hook to your repo on github or bitbucket, and hell, we'll automatically
+push changes from your (bitbucket|github) account to your (github|bitbucket) account.
+
+It's building bridges! It's reuniting the repotetariat. Power to the people! All you need to do 
+is::
+
+    brew install rabbitmq
+    virtualenv .
+    pip install -E . -r pip_requirements.txt
+    source bin/activate
+    cat "127.0.0.1 repocracy.com" >> /etc/hosts # or add it in your favorite $EDITOR
+    repocracy/manage.py syncdb && repocracy/manage.py migrate
+    rabbitmq-server &
+    repocracy/manage.py celeryd --loglevel=DEBUG &
+    sudo repocracy/manage.py runserver 0.0.0.0:80 # sorry, we have to sudo and use port 80 so twitter will work. 
+
+And then you're cool as a cucumber.
