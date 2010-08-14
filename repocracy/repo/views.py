@@ -29,9 +29,7 @@ def repo_detail(request, name):
     Repository detail view. Renders `repo_pending.html` or
     `repo_detail.html` depending on status.
     """
-    username, reponame = name.split('/', 1) if '/' in name else (None, name) 
-    base_filter = {'user__username':username} if username else {} 
-    repo = get_object_or_404(Repository.objects.filter(**base_filter), name=reponame)
+    repo = get_object_or_404(Repository.objects.all(), slug=name)
 
     # TODO: better status checking?
     if Status.is_pending(repo):

@@ -34,6 +34,7 @@ class RepoTypes(Choices):
 class Repository(models.Model):
     user = models.ForeignKey(User, null=True, blank=True)
     name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True)
     origin = models.CharField(max_length=255)
     origin_type = models.IntegerField(choices=Status.as_choices(), default=0)
     fs_path = models.CharField(max_length=255)
@@ -43,7 +44,7 @@ class Repository(models.Model):
     def __unicode__(self):
         return self.name
 
-    def get_name(self):
+    def get_slug(self):
         """
         Get name of repo to build repo url.
         """
@@ -81,7 +82,7 @@ class Repository(models.Model):
 
     def get_absolute_url(self):
         return reverse('repo_detail', kwargs={
-            'name':self.get_name(),
+            'name':self.slug,
         })
 
     def update(self):

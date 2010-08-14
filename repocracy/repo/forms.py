@@ -7,6 +7,7 @@ class NewRepoForm(ModelForm):
     def save(self):
         obj = super(NewRepoForm, self).save(commit=False)
         obj.name = obj.guess_name()
+        obj.slug = obj.get_slug()
         obj.save()
         clone_repository.delay(obj.pk)
         return obj
