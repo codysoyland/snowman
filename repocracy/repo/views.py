@@ -15,7 +15,7 @@ def home(request):
     if request.POST:
         if form.is_valid():
             repo = form.save()
-            return HttpResponseRedirect(reverse('repo_detail', pk=repo.pk))
+            return HttpResponseRedirect(reverse('repo_detail', kwargs={'pk': repo.pk}))
 
     return render_to_response('home.html', {
             'form': form
@@ -26,7 +26,7 @@ def repo_detail(request, pk):
     Repository detail view. Renders `repo_pending.html` or
     `repo_detail.html` depending on status.
     """
-    repo = get_object_or_404(Repository.objects.all(), id)
+    repo = get_object_or_404(Repository.objects.all(), pk=pk)
 
     # TODO: better status checking?
     if repo.status < 3:
