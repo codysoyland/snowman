@@ -82,6 +82,8 @@ def translate_repository(repo_pk):
     else:
         pass
 
+    repo.build_symlinks()
+
 @task
 def pull_git(repo_pk):
     try:

@@ -1,8 +1,10 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 import hashlib
+import os
 
 class Choices(object):
     @classmethod
@@ -95,3 +97,20 @@ class Repository(models.Model):
             'claim_hash':self.claim_hash
         })
 
+    def build_symlinks(self):
+        """
+        Symlink primary git/hg urls to public_git and public_hg directories for public serving.
+        """
+        for vcs in ['git', 'hg']:
+            public_vcs_path = os.path.join(settings.REPOCRACY_BASE_REPO_PATH, 'public_%s' % vcs)
+            if not os.path.exists(public_vcs_path):
+                os.makedirs(public_vcs_path)
+            vcs_path = os.path.join(self.fs_path, vcs)
+            os.symlink(
+                vcs_path,
+                os.path.join(public_vcs_path, unicode(self.pk)),
+            )
+            os.symlink(
+                vcs_path,
+                os.path.join(public_vcs_path, self.get_slug()),
+            )
