@@ -7,12 +7,21 @@ REPOTYPES = (
     (1, 'hg'),
 )
 
+STATUSTYPES = (
+    (0, 'PENDING'),
+    (1, 'CLONED'),
+    (2, 'PROCESSING'),
+    (3, 'READY'),
+    (255, 'ERROR')
+)
+
 class Repository(models.Model):
     user = models.ForeignKey(User, null=True, blank=True)
     name = models.CharField(max_length=255)
     origin = models.CharField(max_length=255)
     origin_type = models.IntegerField(choices=REPOTYPES)
     fs_path = models.CharField(max_length=255)
+    status = models.IntegerField(choices=STATUSTYPES)
 
     def __unicode__(self):
         return self.name
@@ -25,3 +34,4 @@ class Repository(models.Model):
         return reverse('repo_detail', kwargs={
             'name':slugify(self.get_name()),
         })
+

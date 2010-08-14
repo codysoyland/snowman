@@ -62,6 +62,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'bluebird',
     'south',
+    'repo',
 )
 
 IS_BLUEBIRD_AUTH_PORTAL = 1
