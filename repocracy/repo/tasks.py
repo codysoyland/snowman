@@ -81,11 +81,10 @@ def clone_repository(repo_pk):
             os.makedirs(i)
 
         child = pexpect.spawn(
-            'git --git-dir=. clone --mirror .',
+            'git --git-dir=. clone --mirror %s .' % repo.origin,
             cwd=destination_dirs[1],
         )
-        result = child.expect(['done.', 'Password:', 'hung up unexpectedly', pexpect.EOF])
-        child.close()
+        result = child.expect([pexpect.EOF, 'Password:', 'hung up unexpectedly',])
 
         #if result == 0:
         #    # clone was successful
@@ -94,6 +93,7 @@ def clone_repository(repo_pk):
         #elif result == 2:
         #    # problem with server
 
+        child.close()
         if result != 0:
             result = subprocess.call(
                 args=['hg', 'clone', repo.origin, '.'],
