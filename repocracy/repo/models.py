@@ -2,35 +2,37 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
-REPO_GIT = 0
-REPO_HG = 1
 
-REPOTYPES = (
-    (REPO_GIT, 'git'),
-    (REPO_HG, 'hg'),
-)
+class Status(object):
+    PENDING = 0
+    CLONED = 1
+    PROCESSING = 2
+    READY = 3
+    ERROR = 255
 
-STATUS_PENDING = 0
-STATUS_CLONED = 1
-STATUS_PROCESSING = 2
-STATUS_READY = 3
-STATUS_ERROR = 255
+    @classmethod
+    def as_choices(cls):
+        returning = [(getattr(cls, i), i) for i in dir(cls) if isinstance(getattr(cls, i), int)]
+        returning.sort()
+        return returning
 
-STATUSTYPES = (
-    (STATUS_PENDING, 'PENDING'),
-    (STATUS_CLONED, 'CLONED'),
-    (STATUS_PROCESSING, 'PROCESSING'),
-    (STATUS_READY, 'READY'),
-    (STATUS_ERROR, 'ERROR')
-)
+class RepoTypes(object):
+    GIT = 0
+    HG = 1
+
+    @classmethod
+    def as_choices(cls):
+        returning = [(getattr(cls, i), i) for i in dir(cls) if isinstance(getattr(cls, i), int)]
+        returning.sort()
+        return returning
 
 class Repository(models.Model):
     user = models.ForeignKey(User, null=True, blank=True)
     name = models.CharField(max_length=255)
     origin = models.CharField(max_length=255)
-    origin_type = models.IntegerField(choices=REPOTYPES)
+    origin_type = models.IntegerField(choices=Status.as_choices(), default=0)
     fs_path = models.CharField(max_length=255)
-    status = models.IntegerField(choices=STATUSTYPES)
+    status = models.IntegerField(choices=RepoTypes.as_choices(), default=0)
 
     def __unicode__(self):
         return self.name
