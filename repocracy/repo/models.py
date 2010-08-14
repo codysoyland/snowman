@@ -2,7 +2,6 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from repocracy.repo import tasks
 import hashlib
 
 class Choices(object):
@@ -86,6 +85,7 @@ class Repository(models.Model):
         })
 
     def update(self):
+        from repocracy.repo import tasks
         return getattr(tasks, 'pull_%s' % RepoTypes.get_typename(self)).delay(self.pk)
 
     def get_claim_url(self):
