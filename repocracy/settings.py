@@ -84,4 +84,4 @@ BROKER_PORT = 5672
 BROKER_VHOST = "/"
 BROKER_USER = "guest"
 BROKER_PASSWORD = "guest"
-REPOCRACY_BASE_REPO_PATH = '/Users/chris/projects/snowman/repos'
+REPOCRACY_BASE_REPO_PATH = os.path.join(BASE_PATH, 'repos')
