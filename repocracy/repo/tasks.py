@@ -8,6 +8,7 @@ from celery.decorators import task
 from repocracy.repo.models import Repository, Status, RepoTypes
 import mercurial.ui
 import mercurial.localrepo
+from mercurial.commands import pull
 import hggit
 import pexpect
 import shutil
@@ -80,6 +81,43 @@ def translate_repository(repo_pk):
         repo.save()
     else:
         pass
+
+@task
+def pull_git(repo_pk):
+    try:
+        repo = Repository.objects.get(pk=repo_pk)
+    except Repository.DoesNotExist:
+        return
+    result = subprocess.call(
+        args=['git','fetch','origin','master'],
+        cwd=os.path.join(repo.fs_path, 'git')
+    )
+    if result == 0:
+        hgui = mercurial.ui.ui()
+        hgui.setconfig('git', 'intree', 'false')
+        hgpath = os.path.join(repo.fs_path, 'hg')
+        hgrepo = mercurial.localrepo.localrepository(hgui, hgpath, 0)
+        githandler = hggit.GitHandler(hgrepo, hgui)
+        githandler.import_commits(None)
+
+@task
+def pull_hg(repo_pk):
+    try:
+        repo = Repository.objects.get(pk=repo_pk)
+    except Repository.DoesNotExist:
+        return
+    hgui = mercurial.ui.ui()
+    hgui.setconfig('git', 'intree', 'false')
+    hgpath = os.path.join(repo.fs_path, 'hg')
+    hgrepo = mercurial.localrepo.localrepository(hgui, hgpath, 0)
+    try:
+        pull(hgui, hgrepo)
+    except:
+        pass
+    else:
+        githandler = hggit.GitHandler(hgrepo, hgui)
+        githandler.export_commits(None)
+
 @task
 def clone_repository(repo_pk):
     try:
