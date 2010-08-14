@@ -50,7 +50,15 @@ def translate_repository(repo_pk):
                 cwd=os.path.join(repo.fs_path, 'git')
             )
         elif repo.origin_type == RepoTypes.GIT:
-            pass
+            hgui = mercurial.ui.ui()
+            hgui.setconfig('git', 'intree', 'false')
+            hgui.setconfig('git', 'exportbranch', 'refs/heads/master')
+            hgpath = os.path.join(repo.fs_path, 'hg') 
+            gitpath = os.path.join(repo.fs_path, 'git')
+            hgrepo = mercurial.localrepo.localrepository(hgui, hgpath, 1)
+            os.symlink(gitpath, os.path.join(hgpath, '.hg', 'git'))
+            githandler = hggit.GitHandler(hgrepo, hgui)
+            githandler.import_commits(None)
         else:
             pass
 @task
