@@ -1,3 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
+    <h1>We&rsquo;re building your repo</h1>
+    <div class="stuff-to-do">
+            <div>
+                <h2>Register with twitter!</h2>
+            	<p>
+                    Register with us using twitter, and we&rsquo;ll keep your repo around indefinitely.
+                    If you&rsquo;re registered, you can even set up a URL to push your {{ repo.repo_type }} repo to to mirror it to other SCM&rsquo;s.
+                </p>
+            </div>
+            <div>
+                <h2>Add this SSH key to your repos</h2>
+            	<p>
+                    If you add this to your repository manager, we can push on your behalf when new commits hit our site.
+                </p>
+            </div>
+            <div>
+                <h2>Set up a post-push hook on {% if repo.repo_type = 'github' %}Github{% else %}Bitbucket{% endif %}</h2>
+            	<p>
+                    That way, whenever you push to {% if repo.repo_type = 'github' %}Github{% else %}Bitbucket{% endif %},
+                    your changes will end up on {% if repo.repo_type = 'github' %}Bitbucket{% else %}Github{% endif %}
+                </p>
+            </div>
+            <div>
+                <h2>Pet a cat for a while</h2>
+            	<p>
+                    Cats are known to enjoy being petted. Go ahead, indulge. We&rsquo;ll still be here when you&rsquo;re done.
+                </p>
+            </div>
+    </div>
 {% endblock %}
