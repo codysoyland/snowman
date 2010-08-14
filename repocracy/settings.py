@@ -63,6 +63,7 @@ INSTALLED_APPS = (
     'bluebird',
     'south',
     'repo',
+    'djcelery',
 )
 
 IS_BLUEBIRD_AUTH_PORTAL = 1
