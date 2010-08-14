@@ -11,3 +11,4 @@ simplejson
 -e git://github.com/chrisdickinson/waiter.git#egg=waiter
 -e git+http://github.com/chrisdickinson/django-bluebird.git#egg=bluebird
 django-celery
+hg-git
