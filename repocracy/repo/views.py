@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.template import RequestContext
+from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
 
 from repocracy.repo.models import Repository, Status
@@ -48,6 +49,13 @@ def repo_claim(request, pk, claim_hash):
         repo.save()
         return redirect(repo)
     return redirect('home')
+
+def repo_status(request, pk):
+    repo = get_object_or_404(Repository, pk=pk)
+    return HttpResponse(simplejson.dumps({
+        'repo_url':repo.get_absolute_url(),
+        'status':repo.status
+    }), content_type='application/json')
 
 @csrf_exempt
 def post_receive(request, pk):
