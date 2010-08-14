@@ -1,6 +1,10 @@
 import os
 import subprocess
-from repo.models import Repository 
+
+from django.conf import settings
+from celery.decorators import task
+
+from repocracy.repo.models import Repository
 
 @task
 def translate_repository(repo_pk):
@@ -10,6 +14,9 @@ def translate_repository(repo_pk):
 def clone_repository(repo_pk):
     try:
         repo = Repository.objects.get(pk=repo_pk) 
+    except Repository.DoesNotExist:
+        pass
+    else:
         destination = os.path.join(
             settings.REPOCRACY_BASE_REPO_PATH,
             repo.pk
@@ -36,5 +43,3 @@ def clone_repository(repo_pk):
             repo.status = 1
         repo.save()
         translate_repository.delay(repo.pk)
-    except Repository.DoesNotExist:
-        pass
