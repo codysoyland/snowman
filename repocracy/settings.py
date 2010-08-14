@@ -59,6 +59,13 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
+    'bluebird',
+    'south',
+)
+
+IS_BLUEBIRD_AUTH_PORTAL = 1
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'bluebird.backends.TwitterAuthBackend',
 )
