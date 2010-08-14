@@ -3,28 +3,26 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
 
-class Status(object):
+class Choices(object):
+    @classmethod
+    def as_choices(cls):
+        returning = [(getattr(cls, i), i) for i in dir(cls) if isinstance(getattr(cls, i), int)]
+        returning.sort()
+        return returning
+
+
+class Status(Choices):
     PENDING = 0
     CLONED = 1
     PROCESSING = 2
     READY = 3
     ERROR = 255
 
-    @classmethod
-    def as_choices(cls):
-        returning = [(getattr(cls, i), i) for i in dir(cls) if isinstance(getattr(cls, i), int)]
-        returning.sort()
-        return returning
 
-class RepoTypes(object):
+class RepoTypes(Choices):
     GIT = 0
     HG = 1
 
-    @classmethod
-    def as_choices(cls):
-        returning = [(getattr(cls, i), i) for i in dir(cls) if isinstance(getattr(cls, i), int)]
-        returning.sort()
-        return returning
 
 class Repository(models.Model):
     user = models.ForeignKey(User, null=True, blank=True)
