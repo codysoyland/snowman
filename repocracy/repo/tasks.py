@@ -9,6 +9,7 @@ from repocracy.repo.models import Repository, Status, RepoTypes
 import mercurial.ui
 import mercurial.localrepo
 import hggit
+import pexpect
 
 @task
 def translate_repository(repo_pk):
@@ -79,13 +80,20 @@ def clone_repository(repo_pk):
         for i in destination_dirs:
             os.makedirs(i)
 
-        gitproc = subprocess.Popen(
-            args=['git', '--git-dir=.', 'clone', '--mirror', repo.origin, '.'],
+        child = pexpect.spawn(
+            'git --git-dir=. clone --mirror %s',
             cwd=destination_dirs[1],
-            stdin=subprocess.PIPE,
-            close_fds=True
         )
-        result = gitproc.wait()
+        result = child.expect(['done.', 'Password:', 'hung up unexpectedly', pexpect.EOF])
+        child.close()
+
+        #if result == 0:
+        #    # clone was successful
+        #elif result == 1:
+        #    # password was asked for
+        #elif result == 2:
+        #    # problem with server
+
         if result != 0:
             result = subprocess.call(
                 args=['hg', 'clone', repo.origin, '.'],
