@@ -18,7 +18,7 @@ def home(request):
 
     if request.POST:
         if form.is_valid():
-            repo = form.save()
+            repo = form.save(request.user)
             return redirect(repo)
 
     return render_to_response('home.html', {
@@ -46,6 +46,7 @@ def repo_claim(request, pk, claim_hash):
     if request.user.is_authenticated():
         repo = get_object_or_404(Repository, pk=int(pk), claim_hash=claim_hash, user__pk__isnull=True)
         repo.user = request.user
+        repo.slug = repo.get_slug()
         repo.save()
         return redirect(repo)
     return redirect('home')

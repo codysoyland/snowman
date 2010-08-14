@@ -2,6 +2,7 @@
 {% block content %}
     <h1>We&rsquo;re building your repo</h1>
     <div class="stuff-to-do">
+            {% if not repo.user %}
             <div>
                 <h2>Register with twitter!</h2>
             	<p>
@@ -10,6 +11,7 @@
                     Click <a href="{% url bluebird_initiate_login %}?next={{ repo.get_claim_url }}" title="login with twitter">here</a>.
                 </p>
             </div>
+            {% endif %}
             <div>
                 <h2>Add this SSH key to your repos</h2>
             	<p>
