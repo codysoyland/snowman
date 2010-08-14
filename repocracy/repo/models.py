@@ -2,17 +2,26 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
+REPO_GIT = 0
+REPO_HG = 1
+
 REPOTYPES = (
-    (0, 'git'),
-    (1, 'hg'),
+    (REPO_GIT, 'git'),
+    (REPO_HG, 'hg'),
 )
 
+STATUS_PENDING = 0
+STATUS_CLONED = 1
+STATUS_PROCESSING = 2
+STATUS_READY = 3
+STATUS_ERROR = 255
+
 STATUSTYPES = (
-    (0, 'PENDING'),
-    (1, 'CLONED'),
-    (2, 'PROCESSING'),
-    (3, 'READY'),
-    (255, 'ERROR')
+    (STATUS_PENDING, 'PENDING'),
+    (STATUS_CLONED, 'CLONED'),
+    (STATUS_PROCESSING, 'PROCESSING'),
+    (STATUS_READY, 'READY'),
+    (STATUS_ERROR, 'ERROR')
 )
 
 class Repository(models.Model):
