@@ -19,6 +19,15 @@
         <h3>Service Hook URL</h3>
         <p><code>http://{{ site.name }}{% url post_receive repo.pk %}</code></p>
         {% endif %}
+    <h3>Push finished changes to remote repo</h3>
+    <form action="." method="POST">
+        {% csrf_token %}
+        Username: {{ remote_form.username }}
+        Repo name: {{ remote_form.repo_name }}
+        Repo type: {{ remote_form.type }}
+        Auto-push: {{ remote_form.auto_push }}
+        <input type="submit" />
+    </form>
     </div>
 </div>
 {% endblock %}

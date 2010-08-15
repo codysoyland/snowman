@@ -7,7 +7,7 @@ from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
 
 from repocracy.repo.models import Repository, Status
-from repocracy.repo.forms import NewRepoForm
+from repocracy.repo.forms import NewRepoForm, RemoteForm
 
 CAN_CLAIM_KEY = 'claim_repo'
 
@@ -34,10 +34,18 @@ def repo_detail(request, name):
     """
     repo = get_object_or_404(Repository.objects.all(), slug=name)
 
+    remote_form = RemoteForm(request.POST or None)
+    if request.POST:
+        if remote_form.is_valid():
+            instance = remote_form.save(commit=False)
+            instance.repository = repo
+            instance.save()
+
     context_dict = {
         'repo': repo,
         'site': Site.objects.get_current(),
         'can_claim':request.session.get(CAN_CLAIM_KEY, None) == repo.pk,
+        'remote_form': remote_form,
     }
 
     return render_to_response(

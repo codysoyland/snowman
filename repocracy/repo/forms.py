@@ -1,9 +1,9 @@
-from django.forms import ModelForm
+from django import forms
 
-from repocracy.repo.models import Repository
+from repocracy.repo.models import Repository, Remote
 from repocracy.repo.tasks import clone_repository
 
-class NewRepoForm(ModelForm):
+class NewRepoForm(forms.ModelForm):
     def save(self, user):
         obj = super(NewRepoForm, self).save(commit=False)
         obj.name = obj.guess_name()
@@ -18,3 +18,22 @@ class NewRepoForm(ModelForm):
     class Meta:
         model = Repository
         fields = ('origin',)
+
+class RemoteForm(forms.ModelForm):
+    username = forms.CharField(max_length=255)
+    repo_name = forms.CharField(max_length=255)
+    remote_url = forms.CharField(max_length=255, required=False)
+
+    def clean(self):
+        if self.cleaned_data['type'] == 0:
+            template = 'git@github.com:%s/%s.git'
+        elif self.cleaned_data['type'] == 1:
+            template = 'https://repocracy@bitbucket.org/%s/%s'
+
+        self.cleaned_data['remote_url'] = template % (
+            self.cleaned_data['username'], self.cleaned_data['repo_name'])
+        return self.cleaned_data
+
+    class Meta:
+        model = Remote
+        fields = ('remote_url', 'type', 'auto_push')

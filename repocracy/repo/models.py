@@ -33,6 +33,11 @@ class RepoTypes(Choices):
     def get_typename(cls, repo):
         return ['git', 'hg'][repo.origin_type]
 
+class RemoteHost(Choices):
+    GITHUB = 0
+    BITBUCKET = 1
+    OTHER = 255
+
 class Repository(models.Model):
     user = models.ForeignKey(User, null=True, blank=True)
     name = models.CharField(max_length=255)
@@ -147,3 +152,10 @@ class Repository(models.Model):
     @property
     def hg_uri(self):
         return self.get_vcs_uri('hg')
+
+class Remote(models.Model):
+    repository = models.ForeignKey(Repository)
+    remote_url = models.CharField(max_length=255)
+    type = models.IntegerField(choices=RemoteHost.as_choices(), default=255)
+    auto_push = models.BooleanField(default=True)
+
