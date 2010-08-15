@@ -3,14 +3,22 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 	<title>{% block title %}REPOCRACY{% block extratitle %}{% endblock %}{% endblock %}</title>
+
+    <link media="all" rel="stylesheet" href="{{ MEDIA_URL }}css/style.css" type="text/css" />
 </head>
     <body id="{% block body_id %}{% endblock %}">
-        <div id="content">
-            {% block content %}
-            <form action="." method="POST">
-
-            </form>
+        <div id="top">
+            {% block top %}
+            <div id="logo">
+                <h1><a href="{% url home %}" title="REPOCRACY">REPOCRACY</a></h1>
+            </div>
             {% endblock %}
+        </div>
+        <div id="bottom">
+            <div id="content">
+                {% block content %}
+                {% endblock %}
+            </div>
         </div>
     </body>
 </html>

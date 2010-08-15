@@ -1,12 +1,29 @@
 {% extends "base.html" %}
+
+{% block body_id %}home{% endblock %}
+
+{% block top %}
+    {{ block.super }}
+    <div class="background">
+        <div>
+            <p>
+            </p>
+        </div>
+    </div>
+{% endblock %}
+
+
 {% block content %}
-<h1>Repocracy</h1>
-<h2>Get started</h2>
-<div>
+    <div id="formcontainer">
     <form method="POST" action=".">
-        {{ form }}
+        <div>
+        <div>
+        <input id="id_origin" type="text" name="origin" maxlength="255" placeholder="Public GIT or HG URL" />
         {% csrf_token %}
-        <input type="submit" />
+        <input type="submit" value="Free It!" />
+        </div>
+        </div>
     </form>
-</div>
+    <div id="dude"></div>
+    </div>
 {% endblock %}
