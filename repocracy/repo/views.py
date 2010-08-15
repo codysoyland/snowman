@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponse
@@ -8,6 +9,8 @@ from django.views.decorators.csrf import csrf_exempt
 from repocracy.repo.models import Repository, Status
 from repocracy.repo.forms import NewRepoForm
 
+CAN_CLAIM_KEY = 'claim_repo'
+
 def home(request):
     """
     Home page view. Form for entry of new repository.
@@ -17,6 +20,7 @@ def home(request):
     if request.POST:
         if form.is_valid():
             repo = form.save(request.user)
+            request.session[CAN_CLAIM_KEY] = repo.pk 
             return redirect(repo)
 
     return render_to_response('home.html', {
@@ -33,6 +37,7 @@ def repo_detail(request, name):
     context_dict = {
         'repo': repo,
         'site': Site.objects.get_current(),
+        'can_claim':request.session.get(CAN_CLAIM_KEY, None) == repo.pk,
     }
 
     return render_to_response(
@@ -67,3 +72,10 @@ def post_receive(request, pk):
     repo = get_object_or_404(Repository, pk=pk)
     repo.update()
     return HttpResponse()
+
+def repo_owner(request, name):
+    user = get_object_or_404(User, username=name)
+    return render_to_response('repo_owner.html', {
+        'repo_owner':user
+    }, context_instance=RequestContext(request))
+
