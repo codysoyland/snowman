@@ -38,9 +38,9 @@ class Repository(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
     origin = models.CharField(max_length=255)
-    origin_type = models.IntegerField(choices=Status.as_choices(), default=0)
+    origin_type = models.IntegerField(choices=RepoTypes.as_choices(), default=0)
     fs_path = models.CharField(max_length=255)
-    status = models.IntegerField(choices=RepoTypes.as_choices(), default=0)
+    status = models.IntegerField(choices=Status.as_choices(), default=0)
     claim_hash = models.CharField(max_length=40, default=lambda : hashlib.sha1().hexdigest())
 
     def __unicode__(self):
