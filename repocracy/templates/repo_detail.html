@@ -1,11 +1,22 @@
 {% extends "base.html" %}
+{% block body_id %}detail{% endblock %}
 {% block content %}
-<h1>{{ repo.name }}</h1>
 <div>
-    <ul>
-        <li>Git: {{ repo.git_uri }}</li>
-        <li>Mercurial: {{ repo.hg_uri }}</li>
-    </ul>
-    <p>Service Hook URL: http://{{ site.name }}{% url post_receive repo.pk %}</p>
+    <h2>{{ repo.name }}</h2>
+    <div>
+        {% if not repo.user and not user.is_authenticated and can_claim %}
+            <p>
+                You haven&rsquo;t claimed this repo. It will be deleted in 30 days if it is not claimed.
+                To claim it, <a href="{% url bluebird_initiate_login %}?next={{ repo.get_claim_url }}" title="login with twitter">login with twitter</a>.
+            </p>
+        {% endif %}
+        <h3>Clone URLs</h3>
+        <dl>
+            <dt>Git</dt><dd><code>{{ repo.git_uri }}</code></dd>
+            <dt>Mercurial</dt><dd><code>{{ repo.hg_uri }}</code></dd>
+        </dl>
+        <h3>Service Hook URL</h3>
+        <p><code>http://{{ site.name }}{% url post_receive repo.pk %}</code></p>
+    </div>
 </div>
 {% endblock %}

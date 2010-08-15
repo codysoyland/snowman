@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block body_id %}owner{% endblock %}
+{% block content %}
+<div>
+    <h2>{{ repo_owner.username }}</h2>
+    <div>
+        <h3>Owns these repos</h3>
+        <ul>
+            {% for repo in repo_owner.repository_set.all %}
+            <li><a href="{{ repo.get_absolute_url }}">{{ repo.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

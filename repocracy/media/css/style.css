@@ -43,8 +43,9 @@ h1, h2, h3,
 body, div                   { padding:0px; margin:0px; }
 
 h1, h2, h3                  { font-family:"MolotRegular"; }
-
 body                        { background:-webkit-gradient(linear, 0% 0%, 100% 0%, from(#FD602b), to(#e22f36)); }
+body                        { background:-moz-linear-gradient(19% 75% 30deg, #FD602b, #e22f36); }
+#home #logo                 { background:-moz-linear-gradient(19% 75% 90deg,#000000, #444444); }
 #home #logo                 { height:120px; background:-webkit-gradient(linear, 0% 100%, 0% 0%, from(#000), to(#444)); }
 #home #logo h1              { position:absolute;  right:48px; top:36px;width:400px; height:85px; background:no-repeat url('../img/logo_inv.png'); }
 #home #logo h1 a            { width:400px; height:85px; overflow:hidden; display:block; text-indent:-9999px; position:relative; }
@@ -52,18 +53,20 @@ body                        { background:-webkit-gradient(linear, 0% 0%, 100% 0%
 #home #top .background      { background:no-repeat url('../img/background.png'); height:316px; }
 #home #top .background div  { background:black; position:relative; left:500px; width:100%; height:316px;}
 #home #top                  { overflow:hidden; }
-
+#home form                  { background:-moz-linear-gradient(19% 75% 90deg,#000000, #444444); }
 #home form                  { -webkit-background-clip:padding-box; background:-webkit-gradient(linear, 0% 100%, 0% 0%, from(#000), to(#222));}
 
 #home #formcontainer        { margin:0pt auto; width:800px; position:relative; top:-80px; }
 #home form                  { display:inline-block; width:600px; float:left; padding:2px; margin-left:16px; }
-#home form                  { border-radius:15px; }
+#home form                  { border-radius:15px; -moz-border-radius:15px; }
 #home #dude                 { background:no-repeat url('../img/dudeworker.png') scroll 0% 100%; width:175px; height:80px; display:inline-block; }
 
 
-#home form > div              { -webkit-background-clip:padding-box; border-radius:15px; padding:36px 36px; background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#000), to(#444)); }
+#home form > div            { background:-moz-linear-gradient(19% 75% 90deg,#444, #000); -moz-border-radius:15px; }
+#home form > div            { -webkit-background-clip:padding-box; border-radius:15px; padding:36px 36px; background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#000), to(#444)); }
 
-#home form div input        { border-radius:5px; background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFF), to(#CCC)); padding:6px; font-size:1.2em; border:none; }
+#home form div input        { background:-moz-linear-gradient(19% 75% 90deg,#FFF, #CCC); }
+#home form div input        { border-radius:5px; -moz-border-radius:5px; background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFF), to(#CCC)); padding:6px; font-size:1.2em; border:none; }
 
 #home form div input[type=text] { width:400px; }
 
@@ -91,7 +94,7 @@ body                        { background:-webkit-gradient(linear, 0% 0%, 100% 0%
 .footer div p { margin:0px 16px; }
 .footer div p a { color:#FD602b; text-decoration:none; }
 
-
+#pending .status div { -moz-transition:0.5s linear margin-top; }
 #pending .status div { -webkit-transition:0.5s linear margin-top; margin-top:1000px;  padding-bottom:16px; border-bottom: 1px solid rgba(255, 255, 255, 0.5); margin-bottom:24px; color:white; }
 #pending .status { height:800px; width:300px; overflow:hidden; font-size:2.2em; text-shadow:1px 1px 0px rgba(0,0,0,0.3); }
 
@@ -119,3 +122,42 @@ body#pending.ready .status div.ready { margin-top:16px; }
 #pending .stuff-to-do h2 { font-size:3.0em; -webkit-text-stroke:2px white; -webkit-text-fill-color:rgba(0,0,0,0); }
 #pending .stuff-to-do h3 { letter-spacing:0.1em; font-size:1.5em; color:white; padding-bottom:24px; padding-top:12px; text-shadow:8px 8px 0px rgba(0,0,0,0.3); }
 #pending .stuff-to-do   { text-shadow:1px 1px 0px rgba(255,255,255,0.3); line-height:2.0; }
+
+#detail #logo                 { height:120px; }
+#detail #logo h1              { position:absolute;  right:48px; top:36px;width:400px; height:85px; background:no-repeat url('../img/logo_inv.png'); }
+#detail #logo h1 a            { width:400px; height:85px; overflow:hidden; display:block; text-indent:-9999px; position:relative; }
+
+#detail #content    { background:-moz-linear-gradient(19% 75% 90deg, #000, #444); -moz-border-radius:16px; }
+#detail #content    { width:800px; margin:0pt auto; margin-top:32px; border-radius:16px; background:-webkit-gradient(linear, 0% 100%, 0% 0%, from(#000), to(#222)); padding:2px; }
+#detail #content > div { padding:32px;  background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#000), to(#444)); border-radius:16px; }
+#detail #content > div { background:-moz-linear-gradient(19% 75% 90deg, #444,#000); -moz-border-radius:16px; }
+#detail #content h2 { font-size:3.0em; margin-bottom:8px; }
+#detail #content h3 { font-size:1.5em; margin-bottom:16px; }
+
+#detail { color:white; }
+
+code    { font-family:"Courier New", "Monaco", monospace; background:#CCC; border:1px solid #999; color:#666; padding:6px; border-radius:5px; margin-bottom:8px; }
+
+dl dd   { margin-bottom:16px; }
+dl dt   { margin-bottom:8px; }
+
+dl dd code  { width:700px; display:block; }
+
+
+#owner #logo                 { height:120px; }
+#owner #logo h1              { position:absolute;  right:48px; top:36px;width:400px; height:85px; background:no-repeat url('../img/logo_inv.png'); }
+#owner #logo h1 a            { width:400px; height:85px; overflow:hidden; display:block; text-indent:-9999px; position:relative; }
+
+#owner #content    {  background:-moz-linear-gradient(19% 75% 90deg, #000, #222); -moz-border-radius:16px; width:800px; margin:0pt auto; margin-top:32px; border-radius:16px; background:-webkit-gradient(linear, 0% 100%, 0% 0%, from(#000), to(#222)); padding:2px; }
+#owner #content > div { background:-moz-linear-gradient(19% 75% 90deg, #444, #000); -moz-border-radius:16px; }
+#owner #content > div { padding:32px;  background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#000), to(#444)); border-radius:16px; }
+#owner #content h2 { font-size:3.0em; margin-bottom:8px; color:white; }
+#owner #content h3 { font-size:1.5em; margin-bottom:16px; color:white; }
+
+#owner ul li { padding-bottom:16px; margin-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.3); }
+#owner ul li a { color:#FD602b; text-decoration:none; }
+#owner ul li a:hover { color:white; }
+
+#detail #logo                 { height:120px; }
+#detail #logo h1              { position:absolute;  right:48px; top:36px;width:400px; height:85px; background:no-repeat url('../img/logo_inv.png'); }
+#detail #logo h1 a            { width:400px; height:85px; overflow:hidden; display:block; text-indent:-9999px; position:relative; }
