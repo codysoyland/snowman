@@ -126,6 +126,9 @@ class Repository(models.Model):
                 if vcs == 'git':
                     path += '.git'
 
+                target_dir = os.path.dirname(os.path.join(public_vcs_path, path)) 
+                if not os.path.exists(target_dir):
+                    os.makedirs(target_dir)
                 os.symlink(vcs_path, os.path.join(public_vcs_path, path))
 
     def get_vcs_uri(self, vcs):
