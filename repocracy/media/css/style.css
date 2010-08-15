@@ -70,8 +70,10 @@ body                        { background:-moz-linear-gradient(19% 75% 30deg, #FD
 
 #home form div input[type=text] { width:400px; }
 
+#home form div input[type=submit] { background:-moz-linear-gradient(19% 75% 90deg, #FD602b, #e22f36); }
 #home form div input[type=submit]   { background:-webkit-gradient(linear, 0% 0%, 100% 100%, from(#FD602b), to(#e22f36)) no-repeat; color:white; }
 
+#home form div input[type=submit]:hover { background:-moz-linear-gradient(19% 75% 90deg, #FFCC00, #e22f36); }
 #home form div input[type=submit]:hover   { background:-webkit-gradient(linear, 0% 100%, 100% 0%, from(#FFCC00), to(#e22f36)) no-repeat; color:white; cursor:pointer; }
 
 #home form > div > div  { margin:0pt auto; text-align:center; }
