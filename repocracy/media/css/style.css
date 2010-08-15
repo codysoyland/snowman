@@ -91,7 +91,7 @@ body                        { background:-moz-linear-gradient(19% 75% 30deg, #FD
 #explanation h3 { letter-spacing:0.1em; font-size:1.5em; color:white; padding-bottom:24px; padding-top:12px; text-shadow:8px 8px 0px rgba(0,0,0,0.3); }
 #explanation p  { text-shadow:1px 1px 0px rgba(255,255,255,0.3); line-height:2.0; }
 
-.footer { background:black; margin-top:32px;}
+.footer { background:black; margin-top:32px; position:relative; top:85px; width:100%; }
 .footer div { width:800px; margin:0pt auto; padding:32px; color:white; letter-spacing:0.1em; }
 .footer div p { margin:0px 16px; }
 .footer div p a { color:#FD602b; text-decoration:none; }
