@@ -50,8 +50,19 @@ class Repository(models.Model):
         """
         Get name of repo to build repo url.
         """
+        slug = None
         username = '' if self.user is None else slugify(self.user.username)
-        return '/'.join([i for i in [username, slugify(self.name)] if i])
+        trial = base_trial = '/'.join([i for i in [username, slugify(self.name)] if i])
+        appended_number = 1
+        while not slug:
+            # Append number to trial if slug exists
+            if Repository.objects.filter(slug=trial).count() > 0:
+                trial = base_trial + unicode(appended_number)
+                appended_number += 1
+            else:
+                slug = trial
+
+        return slug
 
     def guess_name(self):
         """
