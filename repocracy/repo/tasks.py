@@ -146,6 +146,7 @@ def clone_repository(repo_pk):
         child = pexpect.spawn(
             'git --git-dir=. clone --mirror %s .' % repo.origin,
             cwd=destination_dirs[1],
+            timeout=None
         )
         result = child.expect([pexpect.EOF, 'Password:', 'hung up unexpectedly', 'fatal'])
 
