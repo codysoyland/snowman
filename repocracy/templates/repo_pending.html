@@ -1,49 +1,67 @@
 {% extends "base.html" %}
+{% block body_id %}pending{% endblock %}
 {% block content %}
-    <h1>We&rsquo;re building your repo</h1>
     <div class="stuff-to-do">
+        <h2>While you wait...</h2>
             {% if not repo.user %}
             <div>
-                <h2>Register with twitter!</h2>
+                <h3>Register with twitter!</h3>
             	<p>
                     Register with us using twitter, and we&rsquo;ll keep your repo around indefinitely.
                     If you&rsquo;re registered, you can even set up a URL to push your {{ repo.repo_type }} repo to to mirror it to other SCM&rsquo;s.
                     Click <a href="{% url bluebird_initiate_login %}?next={{ repo.get_claim_url }}" title="login with twitter">here</a>.
                 </p>
             </div>
+            {% else %}
+            <div>
+                <h3>Add our user to your repos</h3>
+            	<p>
+                    If you add &ldquo;Repocracy&rdquo; to your repo on {% if repo.origin_type == 0 %}Bitbucket{% else %}Github{% endif %}, we can push changes from {% if repo.origin_type == 0 %}Github{% else %}Bitbucket{% endif %}.
+                </p>
+            </div>
+            <div>
+                <h3>Set up a post-push hook on {% if repo.origin_type == 0 %}Github{% else %}Bitbucket{% endif %}</h3>
+            	<p>
+                    That way, whenever you push to {% if repo.origin_type == 0 %}Github{% else %}Bitbucket{% endif %},
+                    your changes will end up on {% if repo.origin_type == 0 %}Bitbucket{% else %}Github{% endif %}
+                </p>
+            </div>
             {% endif %}
-            <div>
-                <h2>Add this SSH key to your repos</h2>
-            	<p>
-                    If you add this to your repository manager, we can push on your behalf when new commits hit our site.
-                </p>
-            </div>
-            <div>
-                <h2>Set up a post-push hook on {% if repo.repo_type = 'github' %}Github{% else %}Bitbucket{% endif %}</h2>
-            	<p>
-                    That way, whenever you push to {% if repo.repo_type = 'github' %}Github{% else %}Bitbucket{% endif %},
-                    your changes will end up on {% if repo.repo_type = 'github' %}Bitbucket{% else %}Github{% endif %}
-                </p>
-            </div>
-            <div>
-                <h2>Pet a cat for a while</h2>
-            	<p>
-                    Cats are known to enjoy being petted. Go ahead, indulge. We&rsquo;ll still be here when you&rsquo;re done.
-                </p>
-            </div>
     </div>
+    <div class="status">
+        <div class="pending">We&rsquo;re about to clone your repo.</div>
+        <div class="cloned">We&rsquo;ve cloned your repo.</div>
+        <div class="translating">We&rsquo;re translating your repo.</div>
+        <div class="ready">We're done!</div>
+    </div>
+
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
     <script type="text/javascript">
         $(function() {
+            var statuses = [
+                'pending',
+                'cloned',
+                'translating',
+                'ready',
+            ];
+            var getStatus = function(statusInt) {
+                var stat = statuses[statusInt];
+                return stat || 'error';
+            };
+
             var refresh_url = "{% url repo_status repo.pk %}",
                 refresher = function(data) {
                     var fn = arguments.callee;
-                    if(data.status == 3) {
-                        location.reload();
-                    } else {
-                        setTimeout(function () {
+                    console.log(data);
+                    $('body').addClass(getStatus(data.status));
+                    if(data.status < 3) {
+                        setTimeout(function() {
                             $.getJSON(refresh_url, fn);
-                        }, 500);
+                        }, 200);
+                    } else {
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
                     }
             };
             setTimeout(function() {

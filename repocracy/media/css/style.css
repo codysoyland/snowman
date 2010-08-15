@@ -44,7 +44,7 @@ body, div                   { padding:0px; margin:0px; }
 
 h1, h2, h3                  { font-family:"MolotRegular"; }
 
-#home                       { background:-webkit-gradient(linear, 0% 0%, 100% 0%, from(#FD602b), to(#e22f36)); }
+body                        { background:-webkit-gradient(linear, 0% 0%, 100% 0%, from(#FD602b), to(#e22f36)); }
 #home #logo                 { height:120px; background:-webkit-gradient(linear, 0% 100%, 0% 0%, from(#000), to(#444)); }
 #home #logo h1              { position:absolute;  right:48px; top:36px;width:400px; height:85px; background:no-repeat url('../img/logo_inv.png'); }
 #home #logo h1 a            { width:400px; height:85px; overflow:hidden; display:block; text-indent:-9999px; position:relative; }
@@ -90,3 +90,32 @@ h1, h2, h3                  { font-family:"MolotRegular"; }
 .footer div { width:800px; margin:0pt auto; padding:32px; color:white; letter-spacing:0.1em; }
 .footer div p { margin:0px 16px; }
 .footer div p a { color:#FD602b; text-decoration:none; }
+
+
+#pending .status div { -webkit-transition:0.5s linear margin-top; margin-top:1000px;  padding-bottom:16px; border-bottom: 1px solid rgba(255, 255, 255, 0.5); margin-bottom:24px; color:white; }
+#pending .status { height:800px; width:300px; overflow:hidden; font-size:2.2em; text-shadow:1px 1px 0px rgba(0,0,0,0.3); }
+
+#pending .stuff-to-do { width:500px; float:left; }
+#pending #content { width:800px; margin:0pt auto; } 
+
+body#pending.ready .status div.pending,
+body#pending.cloned .status div.pending,
+body#pending.translating .status div.pending,
+body#pending.pending .status div.pending   { margin-top:16px;}
+
+body#pending.ready .status div.cloned,
+body#pending.translating .status div.cloned,
+body#pending.cloned .status div.cloned   { margin-top:16px; }
+
+body#pending.ready .status div.translating,
+body#pending.translating .status div.translating { margin-top:16px; }
+
+body#pending.ready .status div.ready { margin-top:16px; }
+
+#pending #logo                 { height:120px; }
+#pending #logo h1              { position:absolute;  right:48px; top:36px;width:400px; height:85px; background:no-repeat url('../img/logo_inv.png'); }
+#pending #logo h1 a            { width:400px; height:85px; overflow:hidden; display:block; text-indent:-9999px; position:relative; }
+
+#pending .stuff-to-do h2 { font-size:3.0em; -webkit-text-stroke:2px white; -webkit-text-fill-color:rgba(0,0,0,0); }
+#pending .stuff-to-do h3 { letter-spacing:0.1em; font-size:1.5em; color:white; padding-bottom:24px; padding-top:12px; text-shadow:8px 8px 0px rgba(0,0,0,0.3); }
+#pending .stuff-to-do   { text-shadow:1px 1px 0px rgba(255,255,255,0.3); line-height:2.0; }
