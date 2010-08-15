@@ -90,10 +90,11 @@ def pull_git(repo_pk):
         repo = Repository.objects.get(pk=repo_pk)
     except Repository.DoesNotExist:
         return
+    git_dir = os.path.join(repo.fs_path, 'git')
     result = subprocess.call(
-        args=['git','fetch','origin','master'],
-        cwd=os.path.join(repo.fs_path, 'git')
-    )
+        args=['git','fetch','origin','master'], cwd=git_dir)
+    result = result or subprocess.call(
+        args=['git','reset','--soft','FETCH_HEAD'], cwd=git_dir)
     if result == 0:
         hgui = mercurial.ui.ui()
         hgui.setconfig('git', 'intree', 'false')
