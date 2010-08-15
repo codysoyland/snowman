@@ -163,3 +163,7 @@ dl dd code  { width:700px; display:block; }
 #detail #logo                 { height:120px; }
 #detail #logo h1              { position:absolute;  right:48px; top:36px;width:400px; height:85px; background:no-repeat url('../img/logo_inv.png'); }
 #detail #logo h1 a            { width:400px; height:85px; overflow:hidden; display:block; text-indent:-9999px; position:relative; }
+
+p   { line-height:1.5; }
+a { color: #FD602b; text-decoration:none; }
+a:hover { color:white; }
