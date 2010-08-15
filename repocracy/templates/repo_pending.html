@@ -59,7 +59,6 @@
             var refresh_url = "{% url repo_status repo.pk %}",
                 refresher = function(data) {
                     var fn = arguments.callee;
-                    console.log(data);
                     $('body').addClass(getStatus(data.status));
                     if(data.status < 3) {
                         setTimeout(function() {
