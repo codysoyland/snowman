@@ -140,7 +140,6 @@ def clone_repository(repo_pk):
             cwd=destination_dirs[1],
         )
         result = child.expect([pexpect.EOF, 'Password:', 'hung up unexpectedly', 'fatal'])
-        result = child.before if child.before is not None else result
 
         #if result == 0:
         #    # clone was successful
