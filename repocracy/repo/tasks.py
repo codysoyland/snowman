@@ -9,9 +9,22 @@ from repocracy.repo.models import Repository, Status, RepoTypes
 import mercurial.ui
 import mercurial.localrepo
 from mercurial.commands import pull
+from mercurial.commands import update
 import hggit
 import pexpect
 import shutil
+
+def update_git_master(hg_path, git_path, tip_hex):
+    hggitmap = os.path.join(hg_path, 'git-mapfile')
+    githead = os.path.join(git_path, 'refs', 'heads', 'master')
+    with open(hggitmap, 'r') as input:
+        for line in input:
+            githash, hghash = line.split(' ')
+            hghash = hghash.strip()
+            if hghash == tip_hex:
+                with open(githead, 'w') as output:
+                    output.write(githash)
+                break
 
 @task
 def translate_repository(repo_pk):
@@ -33,21 +46,10 @@ def translate_repository(repo_pk):
 
         tip_changeset = hgrepo['tip']
         tip_hex = tip_changeset.hex()
-        
         hgrepopath = os.path.join(hgpath, '.hg')
-        hggitmap = os.path.join(hgrepopath, 'git-mapfile')
-        
         gitrepopath = os.path.join(hgpath, '.git')
-        githead = os.path.join(gitrepopath, 'refs', 'heads', 'master')
+        update_git_master(hgrepopath, gitrepopath, tip_hex)
 
-        with open(hggitmap, 'r') as input:
-            for line in input:
-                githash, hghash = line.split(' ')
-                hghash = hghash.strip()
-                if hghash == tip_hex:
-                    with open(githead, 'w') as output:
-                        output.write(githash)
-                    break
         result = subprocess.call(
             args=['git','clone','--mirror', hgpath, './'],
             cwd=os.path.join(repo.fs_path, 'git')
@@ -109,17 +111,22 @@ def pull_hg(repo_pk):
         repo = Repository.objects.get(pk=repo_pk)
     except Repository.DoesNotExist:
         return
+    hgpath = os.path.join(repo.fs_path, 'hg')
+
+    for command in ['pull', 'update']:
+        subprocess.call(args=['hg', command], cwd=hgpath)
+
     hgui = mercurial.ui.ui()
     hgui.setconfig('git', 'intree', 'false')
-    hgpath = os.path.join(repo.fs_path, 'hg')
     hgrepo = mercurial.localrepo.localrepository(hgui, hgpath, 0)
-    try:
-        pull(hgui, hgrepo)
-    except:
-        pass
-    else:
-        githandler = hggit.GitHandler(hgrepo, hgui)
-        githandler.export_commits(None)
+    githandler = hggit.GitHandler(hgrepo, hgui)
+    githandler.export_commits()
+
+    tip_changeset = hgrepo['tip']
+    tip_hex = tip_changeset.hex()
+    gitrepopath = os.path.join(repo.fs_path, 'git')
+    hgrepopath = os.path.join(hgpath, '.hg')
+    update_git_master(hgrepopath, gitrepopath, tip_hex)
 
 @task
 def clone_repository(repo_pk):

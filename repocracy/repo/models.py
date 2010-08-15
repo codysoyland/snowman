@@ -99,6 +99,9 @@ class Repository(models.Model):
         })
 
     def update(self):
+        """
+        Update repository from origin.
+        """
         from repocracy.repo import tasks
         return getattr(tasks, 'pull_%s' % RepoTypes.get_typename(self)).delay(self.pk)
 
