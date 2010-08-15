@@ -6,5 +6,6 @@
         <li>Git: {{ repo.git_uri }}</li>
         <li>Mercurial: {{ repo.hg_uri }}</li>
     </ul>
+    <p>Service Hook URL: http://{{ site.name }}{% url post_receive repo.pk %}</p>
 </div>
 {% endblock %}

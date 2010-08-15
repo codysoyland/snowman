@@ -1,3 +1,4 @@
+from django.contrib.sites.models import Site
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.template import RequestContext
@@ -31,6 +32,7 @@ def repo_detail(request, name):
 
     context_dict = {
         'repo': repo,
+        'site': Site.objects.get_current(),
     }
 
     return render_to_response(
