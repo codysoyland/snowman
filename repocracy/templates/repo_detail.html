@@ -15,8 +15,10 @@
             <dt>Git</dt><dd><code>{{ repo.git_uri }}</code></dd>
             <dt>Mercurial</dt><dd><code>{{ repo.hg_uri }}</code></dd>
         </dl>
+        {% if repo.user and repo.user.pk == user.pk or can_claim %}
         <h3>Service Hook URL</h3>
         <p><code>http://{{ site.name }}{% url post_receive repo.pk %}</code></p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
