@@ -117,11 +117,27 @@ class Repository(models.Model):
             if not os.path.exists(public_vcs_path):
                 os.makedirs(public_vcs_path)
             vcs_path = os.path.join(self.fs_path, vcs)
-            os.symlink(
-                vcs_path,
-                os.path.join(public_vcs_path, unicode(self.pk)),
-            )
-            os.symlink(
-                vcs_path,
-                os.path.join(public_vcs_path, self.get_slug()),
-            )
+
+            destinations = [unicode(self.pk), self.slug]
+            for path in destinations:
+                if vcs == 'git':
+                    path += '.git'
+
+                os.symlink(vcs_path, os.path.join(public_vcs_path, path))
+
+    def get_vcs_uri(self, vcs):
+        """
+        Get VCS url for given VCS.
+        """
+        if vcs == 'git':
+            return 'git://repocracy.com/%s.git' % self.slug
+        elif vcs == 'hg':
+            return 'http://repocracy.com/hg/%s/' % self.slug
+
+    @property
+    def git_uri(self):
+        return self.get_vcs_uri('git')
+
+    @property
+    def hg_uri(self):
+        return self.get_vcs_uri('hg')

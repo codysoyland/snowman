@@ -1,3 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
+<h1>{{ repo.name }}</h1>
+<div>
+    <ul>
+        <li>Git: {{ repo.git_uri }}</li>
+        <li>Mercurial: {{ repo.hg_uri }}</li>
+    </ul>
+</div>
 {% endblock %}
