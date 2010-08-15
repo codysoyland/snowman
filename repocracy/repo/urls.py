@@ -1,4 +1,6 @@
 from django.conf.urls.defaults import *
+from django.conf import settings
+import os
 
 urlpatterns = patterns('repocracy.repo.views',
     url(r'^$', 'home', name='home'),
@@ -6,4 +8,11 @@ urlpatterns = patterns('repocracy.repo.views',
     url(r'^repos/(?P<name>[/\-_\d\w\\\.]+)/$', 'repo_detail', name='repo_detail'),
     url(r'^post-receive/(?P<pk>\d+)/$', 'post_receive', name='post_receive'),
     url(r'^status/(?P<pk>\d+)/$', 'repo_status', name='repo_status'),
+)
+
+urlpatterns += patterns('',
+    # Not a smart way to serve repos (very slow).
+    # Serve with nginx using static http, or preferably the CGI hgwebdir script
+    url(r'^hg(?P<path>.*)$', 'django.views.static.serve',
+        {'show_indexes': True, 'document_root': os.path.join(settings.REPOCRACY_BASE_REPO_PATH, 'public_hg')}),
 )
