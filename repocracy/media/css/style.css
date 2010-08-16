@@ -64,7 +64,7 @@ body                        { background:-moz-linear-gradient(19% 75% 30deg, #FD
 #home form                  { display:inline-block; width:600px; float:left; padding:2px; margin-left:16px; }
 #home form                  { border-radius:15px; -moz-border-radius:15px; }
 #home #dude                 { background:no-repeat url('../img/dudeworker.png') scroll 0% 100%; width:175px; height:80px; display:inline-block; }
-
+#home .error                { padding-top:16px; color:#FF2266; }
 
 #home form > div            { background:-moz-linear-gradient(19% 75% 90deg,#444, #000); -moz-border-radius:15px; }
 #home form > div            { -webkit-background-clip:padding-box; border-radius:15px; padding:36px 36px; background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#000), to(#444)); }
@@ -162,3 +162,6 @@ a:hover { color:white; }
 
 #facebox    { color:white; }
 #facebox .popup table tr td.body { background:black !important; }
+
+
+
