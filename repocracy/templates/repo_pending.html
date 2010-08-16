@@ -73,12 +73,11 @@
                             $.getJSON(refresh_url, fn);
                         }, 200);
                     } else {
-                        if(data.status == 3) {
+                        if(data.status < 4) {
                             setTimeout(function() {
                                 location.reload();
                             }, 1000);
                         } else {
-                            console.log(data);
                             $('#things-failed').click();
                         }
                     }
