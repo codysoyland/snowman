@@ -47,10 +47,12 @@ body, div                   { padding:0px; margin:0px; }
 h1, h2, h3                  { font-family:"MolotRegular"; }
 body                        { background:-webkit-gradient(linear, 0% 0%, 100% 0%, from(#FD602b), to(#e22f36)); }
 body                        { background:-moz-linear-gradient(19% 75% 30deg, #FD602b, #e22f36); }
-#home #logo                 { background:-moz-linear-gradient(19% 75% 90deg,#000000, #444444); }
-#home #logo                 { height:120px; background:-webkit-gradient(linear, 0% 100%, 0% 0%, from(#000), to(#444)); }
-#home #logo h1              { position:absolute;  right:48px; top:36px;width:400px; height:85px; background:no-repeat url('../img/logo_inv.png'); }
-#home #logo h1 a            { width:400px; height:85px; overflow:hidden; display:block; text-indent:-9999px; position:relative; }
+#logo                 { background:-moz-linear-gradient(19% 75% 90deg,#000000, #444444); }
+#home #logo                 { background:-webkit-gradient(linear, 0% 100%, 0% 0%, from(#000), to(#444)); }
+#logo                   {height:120px; } 
+#logo h1              { position:absolute;  right:48px; top:36px;width:400px; height:85px; background:no-repeat url('../img/logo_inv.png'); }
+#logo h1 a            { width:400px; height:85px; overflow:hidden; display:block; text-indent:-9999px; position:relative; }
+#logo #auth         { position:absolute; right:48px; top:121px; }
 
 #home #top .background      { background:no-repeat url('../img/background.png'); height:316px; }
 #home #top .background div  { background:black; position:relative; left:500px; width:100%; height:316px;}
@@ -119,17 +121,9 @@ body#pending.translating .status div.translating { margin-top:16px; }
 
 body#pending.ready .status div.ready { margin-top:16px; }
 
-#pending #logo                 { height:120px; }
-#pending #logo h1              { position:absolute;  right:48px; top:36px;width:400px; height:85px; background:no-repeat url('../img/logo_inv.png'); }
-#pending #logo h1 a            { width:400px; height:85px; overflow:hidden; display:block; text-indent:-9999px; position:relative; }
-
 #pending .stuff-to-do h2 { font-size:3.0em; -webkit-text-stroke:2px white; -webkit-text-fill-color:rgba(0,0,0,0); }
 #pending .stuff-to-do h3 { letter-spacing:0.1em; font-size:1.5em; color:white; padding-bottom:24px; padding-top:12px; text-shadow:8px 8px 0px rgba(0,0,0,0.3); }
 #pending .stuff-to-do   { text-shadow:1px 1px 0px rgba(255,255,255,0.3); line-height:2.0; }
-
-#detail #logo                 { height:120px; }
-#detail #logo h1              { position:absolute;  right:48px; top:36px;width:400px; height:85px; background:no-repeat url('../img/logo_inv.png'); }
-#detail #logo h1 a            { width:400px; height:85px; overflow:hidden; display:block; text-indent:-9999px; position:relative; }
 
 #detail #content    { background:-moz-linear-gradient(19% 75% 90deg, #000, #444); -moz-border-radius:16px; }
 #detail #content    { width:800px; margin:0pt auto; margin-top:32px; border-radius:16px; background:-webkit-gradient(linear, 0% 100%, 0% 0%, from(#000), to(#222)); padding:2px; }
@@ -152,11 +146,6 @@ dl dt   { margin-bottom:8px; }
 
 dl dd code  { width:700px; display:block; }
 
-
-#owner #logo                 { height:120px; }
-#owner #logo h1              { position:absolute;  right:48px; top:36px;width:400px; height:85px; background:no-repeat url('../img/logo_inv.png'); }
-#owner #logo h1 a            { width:400px; height:85px; overflow:hidden; display:block; text-indent:-9999px; position:relative; }
-
 #owner #content    {  background:-moz-linear-gradient(19% 75% 90deg, #000, #222); -moz-border-radius:16px; width:800px; margin:0pt auto; margin-top:32px; border-radius:16px; background:-webkit-gradient(linear, 0% 100%, 0% 0%, from(#000), to(#222)); padding:2px; }
 #owner #content > div { background:-moz-linear-gradient(19% 75% 90deg, #444, #000); -moz-border-radius:16px; }
 #owner #content > div { padding:32px;  background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#000), to(#444)); border-radius:16px; }
@@ -166,10 +155,6 @@ dl dd code  { width:700px; display:block; }
 #owner ul li { padding-bottom:16px; margin-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.3); }
 #owner ul li a { color:#FD602b; text-decoration:none; }
 #owner ul li a:hover { color:white; }
-
-#detail #logo                 { height:120px; }
-#detail #logo h1              { position:absolute;  right:48px; top:36px;width:400px; height:85px; background:no-repeat url('../img/logo_inv.png'); }
-#detail #logo h1 a            { width:400px; height:85px; overflow:hidden; display:block; text-indent:-9999px; position:relative; }
 
 p   { line-height:1.5; }
 a { color: #FD602b; text-decoration:none; }

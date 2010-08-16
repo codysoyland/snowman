@@ -5,13 +5,19 @@
 	<title>{% block title %}REPOCRACY{% block extratitle %}{% endblock %}{% endblock %}</title>
     <link rel="shortcut icon" href="{{ MEDIA_URL }}img/favicon.png" />
     <link media="all" rel="stylesheet" href="{{ MEDIA_URL }}css/style.css" type="text/css" />
-    <link media="all" rel="stylesheet" href="{{ MEDIA_URL }}facebox/facebox.css" type="text/css" />
 </head>
     <body id="{% block body_id %}{% endblock %}">
         <div id="top">
             {% block top %}
             <div id="logo">
                 <h1><a href="{% url home %}" title="REPOCRACY">REPOCRACY</a></h1>
+                <div id="auth">
+                    {% if user.is_authenticated %}
+                        <p>Hi, {{ user.username }}! <a href="/admin/auth/logout">Logout</a></p>
+                    {% else %}
+                        <p><a href="{% url bluebird_initiate_login %}?next=/" title="login">Login</a></p>
+                    {% endif %}
+                </div>
             </div>
             {% endblock %}
         </div>
