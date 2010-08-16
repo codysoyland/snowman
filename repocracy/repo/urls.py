@@ -16,4 +16,5 @@ urlpatterns += patterns('',
     # Serve with nginx using static http, or preferably the CGI hgwebdir script
     url(r'^hg(?P<path>.*)$', 'django.views.static.serve',
         {'show_indexes': True, 'document_root': os.path.join(settings.REPOCRACY_BASE_REPO_PATH, 'public_hg')}),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'redirect_field_name': 'next'}),
 )
