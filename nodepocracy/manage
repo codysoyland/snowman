@@ -1,0 +1,3 @@
+#!/usr/bin/env node
+process.argv.push('settings');
+require('wilson').commands.runcommand();
