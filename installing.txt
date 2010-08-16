@@ -4,7 +4,10 @@ for turning repos based in one SCM (git or hg) into the opposite SCM.
 The cool thing? Add a web hook to your repo on github or bitbucket, and hell, we'll automatically
 push changes from your (bitbucket|github) account to your (github|bitbucket) account.
 
-It's building bridges! It's reuniting the repotetariat. Power to the people! All you need to do 
+This assumes you have a postgres database set up, and that you have a postgres user that
+does not have password auth on (e.g., psql -Upostgres <anydb> works without having to provide a password).
+
+It's building bridges! It's reuniting the repoletariat. Power to the people! All you need to do 
 is::
 
     brew install rabbitmq
@@ -12,9 +15,20 @@ is::
     pip install -E . -r pip_requirements.txt
     source bin/activate
     cat "127.0.0.1 repocracy.com" >> /etc/hosts # or add it in your favorite $EDITOR
+    createuser postgres         # unnecessary if you already have a postgres user
+    createdb -Upostgres repocracy
     repocracy/manage.py syncdb && repocracy/manage.py migrate
-    rabbitmq-server &
-    repocracy/manage.py celeryd --loglevel=DEBUG &
+
+    # open up a shell and run...
+    rabbitmq-server 
+
+    # open up another shell and run...
+    repocracy/manage.py celeryd --loglevel=DEBUG
+
+    #open up yet another shell and run...
+    repocracy/run-git-daemon.sh
+
+    #seriously, the final shell to open... 
     sudo repocracy/manage.py runserver 0.0.0.0:80 # sorry, we have to sudo and use port 80 so twitter will work. 
 
 And then you're cool as a cucumber.
