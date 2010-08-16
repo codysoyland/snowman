@@ -5,7 +5,7 @@ import sys
 from django.conf import settings
 from celery.decorators import task
 
-from repocracy.repo.models import Repository, Status, RepoTypes
+from repocracy.repo.models import Repository, Remote, Status, RepoTypes
 import mercurial.ui
 import mercurial.localrepo
 from mercurial.commands import pull
@@ -25,6 +25,30 @@ def update_git_master(hg_path, git_path, tip_hex):
                 with open(githead, 'w') as output:
                     output.write(githash)
                 break
+
+@task
+def push_to_remotes(repo_pk, auto_only=True):
+    try:
+        repo = Repository.objects.get(pk=repo_pk) 
+    except Repository.DoesNotExist:
+        return "Repository with %d did not exist. )`:" % repo_pk 
+
+    remotes = Remote.objects.filter(repository=repo)
+    if auto_only:
+        remotes = remotes.filter(auto_push=True)
+
+    for remote in remotes:
+        repo_type = RepoTypes.get_typename(repo)
+        if repo_type == 'git':
+            result = subprocess.call(
+                args=['git','push',remote.remote_url,'master'],
+                cwd=os.path.join(repo.fs_path, 'git')
+            )
+        else:
+            result = subprocess.call(
+                args=['hg','push',remote.remote_url],
+                cwd=os.path.join(repo.fs_path, 'hg')
+            )
 
 @task
 def translate_repository(repo_pk):
@@ -86,6 +110,8 @@ def translate_repository(repo_pk):
 
     repo.build_symlinks()
 
+    push_to_remotes(repo.pk)
+
 @task
 def pull_git(repo_pk):
     try:
@@ -104,6 +130,8 @@ def pull_git(repo_pk):
         hgrepo = mercurial.localrepo.localrepository(hgui, hgpath, 0)
         githandler = hggit.GitHandler(hgrepo, hgui)
         githandler.import_commits(None)
+
+    push_to_remotes.delay(repo.pk, auto_only=True)
 
 @task
 def pull_hg(repo_pk):
@@ -127,6 +155,8 @@ def pull_hg(repo_pk):
     gitrepopath = os.path.join(repo.fs_path, 'git')
     hgrepopath = os.path.join(hgpath, '.hg')
     update_git_master(hgrepopath, gitrepopath, tip_hex)
+
+    push_to_remotes.delay(repo.pk, auto_only=True)
 
 @task
 def clone_repository(repo_pk):

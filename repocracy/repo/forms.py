@@ -1,4 +1,6 @@
 from django import forms
+from django.conf import settings
+
 from repocracy.repo.models import Repository, Remote, RemoteHost
 from repocracy.repo.tasks import clone_repository
 
@@ -27,7 +29,8 @@ class RemoteForm(forms.ModelForm):
         if self.cleaned_data['type'] == 0:
             template = 'git@github.com:%s/%s.git'
         elif self.cleaned_data['type'] == 1:
-            template = 'https://repocracy@bitbucket.org/%s/%s'
+            userpass = ':'.join([settings.REPOCRACY_BB_USER, settings.REPOCRACY_BB_PASSWORD])
+            template = 'https://' + userpass + '@bitbucket.org/%s/%s'
 
         self.cleaned_data['remote_url'] = template % (
             self.cleaned_data['username'], self.cleaned_data['repo_name'])

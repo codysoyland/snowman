@@ -85,3 +85,8 @@ BROKER_VHOST = "/"
 BROKER_USER = "guest"
 BROKER_PASSWORD = "guest"
 REPOCRACY_BASE_REPO_PATH = os.path.join(BASE_PATH, 'repos')
+
+try:
+    from local_settings import *
+except ImportError:
+    pass

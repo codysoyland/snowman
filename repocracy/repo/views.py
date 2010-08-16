@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from repocracy.repo.models import Repository, Status
 from repocracy.repo.forms import NewRepoForm, RemoteForm
+from repocracy.repo.tasks import push_to_remotes
 
 CAN_CLAIM_KEY = 'claim_repo'
 
@@ -40,6 +41,7 @@ def repo_detail(request, name):
             instance = remote_form.save(commit=False)
             instance.repository = repo
             instance.save()
+            push_to_remotes(repo.pk)
 
     context_dict = {
         'repo': repo,
