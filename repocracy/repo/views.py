@@ -64,6 +64,7 @@ def repo_claim(request, pk, claim_hash):
         repo.user = request.user
         repo.slug = repo.get_slug()
         repo.save()
+        repo.build_symlinks()
         return redirect(repo)
     return redirect('home')
 
