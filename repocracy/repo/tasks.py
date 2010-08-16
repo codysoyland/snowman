@@ -113,9 +113,10 @@ def translate_repository(repo_pk):
 
         push_to_remotes(repo.pk)
     except Exception, e:
+        Repository.objects.filter(pk=repo_pk).update(status=Status.ERROR)
         raise e
     finally:
-        Repository.objects.filter(pk=repo_pk).update(status=Status.ERROR)
+        pass
 
 @task
 def pull_git(repo_pk):
