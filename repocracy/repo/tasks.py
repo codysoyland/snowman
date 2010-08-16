@@ -180,13 +180,6 @@ def clone_repository(repo_pk):
         )
         result = child.expect([pexpect.EOF, 'Password:', 'hung up unexpectedly', 'fatal'])
 
-        #if result == 0:
-        #    # clone was successful
-        #elif result == 1:
-        #    # password was asked for
-        #elif result == 2:
-        #    # problem with server
-
         child.close()
         if result != 0:
             result = subprocess.call(

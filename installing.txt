@@ -11,9 +11,6 @@ is::
     virtualenv .
     pip install -E . -r pip_requirements.txt
     source bin/activate
-    build local_settings.py containing:
-        REPOCRACY_BB_USER # bitbucket username
-        REPOCRACY_BB_PASSWORD # bitbucket password
     cat "127.0.0.1 repocracy.com" >> /etc/hosts # or add it in your favorite $EDITOR
     repocracy/manage.py syncdb && repocracy/manage.py migrate
     rabbitmq-server &
