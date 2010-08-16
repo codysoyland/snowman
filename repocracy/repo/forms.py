@@ -29,7 +29,7 @@ class RemoteForm(forms.ModelForm):
         if self.cleaned_data['type'] == 0:
             template = 'git@github.com:%s/%s.git'
         elif self.cleaned_data['type'] == 1:
-	    template = 'ssh://hg@bitbucket.org/%s/%s'
+            template = 'ssh://hg@bitbucket.org/%s/%s'
 
         self.cleaned_data['remote_url'] = template % (
             self.cleaned_data['username'], self.cleaned_data['repo_name'])
