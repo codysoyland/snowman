@@ -38,7 +38,7 @@ def push_to_remotes(repo_pk, auto_only=True):
         remotes = remotes.filter(auto_push=True)
 
     for remote in remotes:
-        repo_type = RepoTypes.get_typename(repo)
+        repo_type = 'git' if remote.type == 0 else 'hg'
         if repo_type == 'git':
             result = subprocess.call(
                 args=['git','push',remote.remote_url,'master'],
