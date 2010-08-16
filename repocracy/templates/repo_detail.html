@@ -19,15 +19,22 @@
         <h3>Service Hook URL</h3>
         <p><code>http://{{ site.name }}{% url post_receive repo.pk %}</code></p>
         {% endif %}
-    <h3>Push finished changes to remote repo</h3>
+    {% if repo.remote_set.all|length < 1 %}
     <form action="." method="POST">
-        {% csrf_token %}
-        Username: {{ remote_form.username }}
-        Repo name: {{ remote_form.repo_name }}
-        Repo type: {{ remote_form.type }}
-        Auto-push: {{ remote_form.auto_push }}
+        <h3>Push to this remote</h3>
+        <p><label for="id_username">Username</label> {{ remote_form.username }}</p>
+        <p><label for="id_repo_name">Repo name</label> {{ remote_form.repo_name }}</p>
+        <p><label for="id_type">Repo type</label> {{ remote_form.type }}</p>
+        <p><label for="id_auto_push">Auto-push</label> {{ remote_form.auto_push }}</p>
         <input type="submit" />
+        {% csrf_token %}
     </form>
+    {% else %}
+        <form>
+            <h3>Push to this remote</h3>
+            <p>We&rsquo;re setup to push to <code>{% with repo.remote_set.all|first as remote %}{{ remote.remote_url }}{% endwith %}</code></p>
+        </form>
+    {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -7,6 +7,8 @@
 	font-style: normal;
 }
 
+
+
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
   margin: 0;
   padding: 0;
@@ -138,6 +140,11 @@ body#pending.ready .status div.ready { margin-top:16px; }
 
 #detail { color:white; }
 
+#detail form    { margin-top:32px; }
+#detail label   { width:128px; display:inline-block; margin-bottom:16px; }
+#detail form ul { padding-left:128px; display:block; position:relative; margin-top:-2.4em; }
+#detail form input        { background:-moz-linear-gradient(19% 75% 90deg,#FFF, #CCC); }
+#detail form input        { border-radius:5px; -moz-border-radius:5px; background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFF), to(#CCC)); padding:6px; font-size:1.2em; border:none; }
 code    { font-family:"Courier New", "Monaco", monospace; background:#CCC; border:1px solid #999; color:#666; padding:6px; border-radius:5px; margin-bottom:8px; }
 
 dl dd   { margin-bottom:16px; }
