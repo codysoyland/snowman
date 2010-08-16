@@ -14,7 +14,7 @@
                 <h1><a href="{% url home %}" title="REPOCRACY">REPOCRACY</a></h1>
                 <div id="auth">
                     {% if user.is_authenticated %}
-                        <p>Hi, {{ user.username }}! <a href="/admin/auth/logout">Logout</a></p>
+                        <p>Hi, {{ user.username }}! <a href="/admin/logout">Logout</a></p>
                     {% else %}
                         <p><a href="{% url bluebird_initiate_login %}?next=/" title="login">Login</a></p>
                     {% endif %}
@@ -36,6 +36,14 @@
     </body>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
     <script type="text/javascript" src="{{ MEDIA_URL }}facebox/facebox.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+                $('a[rel*=facebox]').facebox({
+                    loadingImage : '{{ MEDIA_URL }}facebox/loading.gif',
+                    closeImage   : '{{ MEDIA_URL }}facebox/closelabel.gif'
+                });
+        });
+    </script>
     {% block extrajs %}
 
     {% endblock %}

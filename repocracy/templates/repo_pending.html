@@ -40,7 +40,12 @@
             <div class="ready">We're done!</div>
         </div>
     {% endif %}
-
+    <a href="#fail" rel="facebox" id="things-failed"></a>
+    <div id="fail" style="display:none;">
+        <h2>Things failed.</h2>
+        <p>We&rsquo;re really sorry. Things broke.</p>
+        <p>You may need to add "Repocracy" as a collaborator on your repo.</p>
+    </div>
 {% endblock %}
 
 {% block extrajs %}
@@ -68,9 +73,14 @@
                             $.getJSON(refresh_url, fn);
                         }, 200);
                     } else {
-                        setTimeout(function() {
-                            location.reload();
-                        }, 1000);
+                        if(data.status == 3) {
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
+                        } else {
+                            console.log(data);
+                            $('#things-failed').click();
+                        }
                     }
             };
             setTimeout(function() {

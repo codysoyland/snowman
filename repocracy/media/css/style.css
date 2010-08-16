@@ -160,4 +160,5 @@ p   { line-height:1.5; }
 a { color: #FD602b; text-decoration:none; }
 a:hover { color:white; }
 
+#facebox    { color:white; }
 #facebox .popup table tr td.body { background:black !important; }
