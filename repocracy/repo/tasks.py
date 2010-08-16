@@ -57,60 +57,65 @@ def translate_repository(repo_pk):
     except Repository.DoesNotExist:
         return "Repository with %d did not exist. )`:" % repo_pk 
     Repository.objects.filter(pk=repo_pk).update(status=Status.PROCESSING)
-    if repo.origin_type == RepoTypes.HG:
+    try:
+        if repo.origin_type == RepoTypes.HG:
 
-        hgui = mercurial.ui.ui()
-        hgui.setconfig('git', 'intree', 'true')
-        hgui.setconfig('git', 'exportbranch', 'refs/heads/master')
+            hgui = mercurial.ui.ui()
+            hgui.setconfig('git', 'intree', 'true')
+            hgui.setconfig('git', 'exportbranch', 'refs/heads/master')
 
-        hgpath = os.path.join(repo.fs_path, 'hg') 
-        hgrepo = mercurial.localrepo.localrepository(hgui, hgpath)
-        githandler = hggit.GitHandler(hgrepo, hgui)
-        githandler.export_commits()
+            hgpath = os.path.join(repo.fs_path, 'hg') 
+            hgrepo = mercurial.localrepo.localrepository(hgui, hgpath)
+            githandler = hggit.GitHandler(hgrepo, hgui)
+            githandler.export_commits()
 
-        tip_changeset = hgrepo['tip']
-        tip_hex = tip_changeset.hex()
-        hgrepopath = os.path.join(hgpath, '.hg')
-        gitrepopath = os.path.join(hgpath, '.git')
-        update_git_master(hgrepopath, gitrepopath, tip_hex)
+            tip_changeset = hgrepo['tip']
+            tip_hex = tip_changeset.hex()
+            hgrepopath = os.path.join(hgpath, '.hg')
+            gitrepopath = os.path.join(hgpath, '.git')
+            update_git_master(hgrepopath, gitrepopath, tip_hex)
 
-        result = subprocess.call(
-            args=['git','clone','--mirror', hgpath, './'],
-            cwd=os.path.join(repo.fs_path, 'git')
-        )
+            result = subprocess.call(
+                args=['git','clone','--mirror', hgpath, './'],
+                cwd=os.path.join(repo.fs_path, 'git')
+            )
 
-        
-        if result == 0:
-            shutil.rmtree(gitrepopath)
+            
+            if result == 0:
+                shutil.rmtree(gitrepopath)
+                symlink_target = os.path.join(hgpath, '.hg', 'git')
+                if not os.path.exists(symlink_target):
+                    os.symlink(os.path.join(repo.fs_path, 'git'), symlink_target)
+                    repo.status = Status.READY
+                    repo.save()
+            else:
+                repo.status = Status.ERROR
+                repo.save()
+        elif repo.origin_type == RepoTypes.GIT:
+            hgui = mercurial.ui.ui()
+            hgui.setconfig('git', 'intree', 'false')
+            hgui.setconfig('git', 'exportbranch', 'refs/heads/master')
+            hgpath = os.path.join(repo.fs_path, 'hg') 
+            creation = 0 if os.path.exists(os.path.join(hgpath, '.hg')) else 1
+            gitpath = os.path.join(repo.fs_path, 'git')
+            hgrepo = mercurial.localrepo.localrepository(hgui, hgpath, creation)
             symlink_target = os.path.join(hgpath, '.hg', 'git')
             if not os.path.exists(symlink_target):
-                os.symlink(os.path.join(repo.fs_path, 'git'), symlink_target)
-                repo.status = Status.READY
-                repo.save()
-        else:
-            repo.status = Status.ERROR
+                os.symlink(gitpath, symlink_target)
+            githandler = hggit.GitHandler(hgrepo, hgui)
+            githandler.import_commits(None)
+            repo.status = Status.READY
             repo.save()
-    elif repo.origin_type == RepoTypes.GIT:
-        hgui = mercurial.ui.ui()
-        hgui.setconfig('git', 'intree', 'false')
-        hgui.setconfig('git', 'exportbranch', 'refs/heads/master')
-        hgpath = os.path.join(repo.fs_path, 'hg') 
-        creation = 0 if os.path.exists(os.path.join(hgpath, '.hg')) else 1
-        gitpath = os.path.join(repo.fs_path, 'git')
-        hgrepo = mercurial.localrepo.localrepository(hgui, hgpath, creation)
-        symlink_target = os.path.join(hgpath, '.hg', 'git')
-        if not os.path.exists(symlink_target):
-            os.symlink(gitpath, symlink_target)
-        githandler = hggit.GitHandler(hgrepo, hgui)
-        githandler.import_commits(None)
-        repo.status = Status.READY
-        repo.save()
-    else:
-        pass
+        else:
+            pass
 
-    repo.build_symlinks()
+        repo.build_symlinks()
 
-    push_to_remotes(repo.pk)
+        push_to_remotes(repo.pk)
+    except Exception, e:
+        raise e
+    finally:
+        Repository.objects.filter(pk=repo_pk).update(status=Status.ERROR)
 
 @task
 def pull_git(repo_pk):
