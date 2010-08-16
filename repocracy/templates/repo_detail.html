@@ -59,13 +59,10 @@
 {% block extrajs %}
 <script type="text/javascript">
     jQuery(document).ready(function($) {
-        $('a[rel*=facebox]').facebox({
-            loadingImage : '{{ MEDIA_URL }}facebox/loading.gif',
-            closeImage   : '{{ MEDIA_URL }}facebox/closelabel.gif'
-        });
-        $('code[rel*=copy]').click(function() {
-            console.log(this.createTextRange());
-        });
-    })
+            $('a[rel*=facebox]').facebox({
+                loadingImage : '{{ MEDIA_URL }}facebox/loading.gif',
+                closeImage   : '{{ MEDIA_URL }}facebox/closelabel.gif'
+            });
+    });
 </script>
 {% endblock %}
