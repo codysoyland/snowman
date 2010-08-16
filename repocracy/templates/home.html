@@ -19,9 +19,11 @@
         <div>
         <div>
         <input id="id_origin" type="text" name="origin" maxlength="255" placeholder="Public GIT or HG URL" />
-        {{ form.errors }}
         {% csrf_token %}
         <input type="submit" value="Free It!" />
+        {% if form.errors %}
+            <p class="error">That&rsquo;s not an an okay url.</p> 
+        {% endif %}
         </div>
         </div>
     </form>
