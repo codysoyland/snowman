@@ -12,16 +12,16 @@
         {% endif %}
         <h3>Clone URLs</h3>
         <dl>
-            <dt>Git</dt><dd><code>{{ repo.git_uri }}</code></dd>
-            <dt>Mercurial</dt><dd><code>{{ repo.hg_uri }}</code></dd>
+            <dt>Git</dt><dd><code rel="copy">{{ repo.git_uri }}</code></dd>
+            <dt>Mercurial</dt><dd><code rel="copy">{{ repo.hg_uri }}</code></dd>
         </dl>
         {% if repo.user and repo.user.pk == user.pk or can_claim %}
-        <h3>Service Hook URL</h3>
-        <p><code>http://{{ site.name }}{% url post_receive repo.pk %}</code></p>
+        <h3>Service Hook URL <a rel="facebox" href="#facebox-hook-{% if repo.origin_type == 0 %}git{% else %}hg{% endif %}">what&rsquo;s this?</a></h3>
+        <p><code rel="copy">http://{{ site.name }}{% url post_receive repo.pk %}</code></p>
         {% endif %}
     {% if repo.remote_set.all|length < 1 %}
     <form action="." method="POST">
-        <h3>Push to this remote</h3>
+        <h3>Push to this remote <a rel="facebox" href="#facebox-remote-{% if repo.origin_type == 0 %}hg{% else %}git{% endif %}">What&rsquo;s this?</a></h3>
         <p><label for="id_username">Username</label> {{ remote_form.username }}</p>
         <p><label for="id_repo_name">Repo name</label> {{ remote_form.repo_name }}</p>
         <p><label for="id_type">Repo type</label> {{ remote_form.type }}</p>
@@ -37,4 +37,35 @@
     {% endif %}
     </div>
 </div>
+
+<div style="display:none" id="facebox-remote-hg">
+    <p>Add us as a collaborator on Bitbucket by</p>
+    <img src="{{ MEDIA_URL }}img/add_us_to_bb.png" alt="add us as a collaborator" />
+</div>
+
+<div style="display:none" id="facebox-remote-git">
+    <p>Add us as a collaborator on Github by</p>
+    <img src="{{ MEDIA_URL }}img/add_us_to_gh.png" alt="add us as a collaborator" />
+</div>
+
+<div style="display:none" id="facebox-hook-hg">
+</div>
+
+<div style="display:none" id="facebox-hook-git">
+</div>
+
+{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+    jQuery(document).ready(function($) {
+        $('a[rel*=facebox]').facebox({
+            loadingImage : '{{ MEDIA_URL }}facebox/loading.gif',
+            closeImage   : '{{ MEDIA_URL }}facebox/closelabel.gif'
+        });
+        $('code[rel*=copy]').click(function() {
+            console.log(this.createTextRange());
+        });
+    })
+</script>
 {% endblock %}

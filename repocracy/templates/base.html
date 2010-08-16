@@ -5,6 +5,7 @@
 	<title>{% block title %}REPOCRACY{% block extratitle %}{% endblock %}{% endblock %}</title>
     <link rel="shortcut icon" href="{{ MEDIA_URL }}img/favicon.png" />
     <link media="all" rel="stylesheet" href="{{ MEDIA_URL }}css/style.css" type="text/css" />
+    <link media="all" rel="stylesheet" href="{{ MEDIA_URL }}facebox/facebox.css" type="text/css" />
 </head>
     <body id="{% block body_id %}{% endblock %}">
         <div id="top">
@@ -26,4 +27,9 @@
             </div>
         </div>
     </body>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}facebox/facebox.js"></script>
+    {% block extrajs %}
+
+    {% endblock %}
 </html>

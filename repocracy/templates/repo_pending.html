@@ -41,7 +41,10 @@
         </div>
     {% endif %}
 
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+{% endblock %}
+
+{% block extrajs %}
+
     <script type="text/javascript">
         {% if not repo.user or user.pk == repo.user.pk %}
         $(function() {
