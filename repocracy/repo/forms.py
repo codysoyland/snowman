@@ -24,7 +24,7 @@ class RemoteForm(forms.ModelForm):
     username = forms.CharField(max_length=255)
     repo_name = forms.CharField(max_length=255)
     remote_url = forms.CharField(max_length=255, required=False)
-    type = forms.IntegerField(widget=forms.RadioSelect(choices=RemoteHost.as_choices()))
+    type = forms.IntegerField(widget=forms.RadioSelect(choices=((0, 'Github'), (1, 'Bitbucket'))))
     def clean(self):
         if self.cleaned_data['type'] == 0:
             template = 'git@github.com:%s/%s.git'
