@@ -5,6 +5,19 @@ from repocracy.repo.models import Repository, Remote, RemoteHost
 from repocracy.repo.tasks import clone_repository
 
 class NewRepoForm(forms.ModelForm):
+    def clean_origin(self):
+        data = self.cleaned_data['origin']
+        if data[0] == '/':
+            raise forms.ValidationError('Missing protocol.')
+        if '@' in data:
+            raise forms.ValidationError('"@" not allowed in origin URI.')
+        if ';' in data:
+            raise forms.ValidationError('Invalid origin URI (contains ";").')
+
+        # Always return the cleaned data, whether you have changed it or
+        # not.
+        return data
+
     def save(self, user):
         obj = super(NewRepoForm, self).save(commit=False)
         obj.name = obj.guess_name()
